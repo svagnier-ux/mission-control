@@ -11,125 +11,95 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 #lock h2{margin-bottom:1.5rem;font-size:1.5rem}
 #lock input{padding:.8rem 1.2rem;border:2px solid #E2E8F0;border-radius:8px;font-size:1rem;width:240px;text-align:center}
 #lock input:focus{outline:none;border-color:var(--cyan)}
-#lock button{display:block;margin:1rem auto 0;padding:.7rem 2rem;background:var(--cyan);color:#fff;border:none;border-radius:8px;font-size:1rem;font-weight:700;cursor:pointer}
+#lock .btn{display:block;margin:1rem auto 0;padding:.7rem 2rem;background:var(--cyan);color:#fff;border:none;border-radius:8px;font-size:1rem;font-weight:700;cursor:pointer}
 #err{color:#EF4444;font-size:.85rem;margin-top:.8rem;display:none}
-#dash{display:none;padding:1.5rem}
+#dash{display:none;padding:1.5rem;max-width:1200px;margin:0 auto}
 .header{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:2px solid var(--cyan);flex-wrap:wrap}
-.header h1{font-size:1.6rem}.header .ts{color:#94A3B8;font-size:.85rem;margin-left:auto}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:1rem}
+.header h1{font-size:1.5rem}.header .ts{color:#94A3B8;font-size:.8rem;margin-left:auto}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1rem}
 .card{background:#fff;border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,.08);overflow:hidden}
-.card-header{padding:.75rem 1rem;background:#F1F5F9;display:flex;align-items:center;gap:.5rem}
-.card-title{font-weight:700;font-size:.9rem}.icon{font-size:1.1rem}
-.card-body{padding:.8rem 1rem;font-size:.82rem;line-height:1.6}
-.card-body pre{white-space:pre-wrap;word-break:break-word;font-size:.75rem;background:#F8FAFC;padding:.5rem;border-radius:6px;max-height:280px;overflow-y:auto}
+.card-header{padding:.7rem 1rem;background:#F1F5F9;display:flex;align-items:center;gap:.5rem}
+.card-title{font-weight:700;font-size:.88rem}.icon{font-size:1.1rem}
+.card-body{padding:.8rem 1rem;font-size:.82rem;line-height:1.7}
 .badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:.72rem;font-weight:700}
 .badge-ok{background:#D1FAE5;color:#065F46}.badge-ko{background:#FEE2E2;color:#991B1B}
-@media(max-width:500px){.grid{grid-template-columns:1fr}#dash{padding:.8rem}}
+.metrics{margin-top:.5rem}
+.kv{display:flex;justify-content:space-between;padding:3px 0}
+.k{color:#64748B}.v{font-weight:600}
+.v.good{color:#10B981}.v.bad{color:#EF4444}
+.sep{height:1px;background:#E2E8F0;margin:6px 0}
+.cron-item{display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid #F1F5F9}
+.cron-freq{color:#64748B;font-size:.75rem}
+.cal-item{padding:4px 0;border-bottom:1px solid #F1F5F9}
+.pipe-stage{font-weight:700;color:var(--cyan);margin-top:.5rem;padding:2px 0;font-size:.8rem}
+.pipe-item{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid #F8FAFC}
+.pipe-val{font-weight:600;color:var(--navy)}
+.pipe-total{display:flex;justify-content:space-between;padding:5px 0;font-weight:700;background:#F1F5F9;border-radius:4px;padding:4px 8px;margin:4px 0}
+.pea-total{font-size:1.1rem;font-weight:700;color:var(--cyan);margin-bottom:.5rem}
+.alloc{margin-top:.5rem;padding:4px 8px;background:#F1F5F9;border-radius:6px;font-size:.8rem}
+.todo-item{padding:4px 0;border-bottom:1px solid #F1F5F9}
+.todo-done{padding:4px 0;border-bottom:1px solid #F1F5F9;color:#94A3B8;text-decoration:line-through}
+@media(max-width:500px){.grid{grid-template-columns:1fr}#dash{padding:.8rem}.header h1{font-size:1.2rem}}
 </style></head><body>
 <div id="lock"><div>
 <h2>🎛️ Mission Control</h2>
 <input type="password" id="pwd" placeholder="Mot de passe" autofocus>
-<button type="button" id="btn">Entrer</button>
+<button type="button" class="btn" id="btn">Entrer</button>
 <div id="err">Mot de passe incorrect</div>
 </div></div>
 <div id="dash">
-<div class="header"><h1>🎛️ Mission Control</h1><span class="ts">Mis à jour : 28/02/2026 00:39</span></div>
+<div class="header"><h1>🎛️ Mission Control</h1><span class="ts">Mis à jour : 28/02/2026 00:45</span></div>
 <div class="grid"><div class="card">
 <div class="card-header" style="border-left:4px solid #10B981">
 <span class="icon">🤖</span><span class="card-title">AEGIS Live</span>
-</div><div class="card-body"><span class="badge badge-ok">Running</span> PID: 104783<br><b>P&L réalisé:</b> $?<br><b>Ordres actifs:</b> ?</div></div>
+</div><div class="card-body"><span class="badge badge-ok">Running</span> PID 104783 &middot; 50 ordres
+<div class="metrics">
+<div class="kv"><span class="k">ETH</span><span class="v">$1,928.70 ↘️</span></div><div class="kv"><span class="k">SOL</span><span class="v">$81.68 ↘️</span></div><div class="kv"><span class="k">AVAX</span><span class="v">$8.96 ↗️</span></div><div class="kv"><span class="k">LINK</span><span class="v">$8.70 ↘️</span></div>
+<div class="sep"></div>
+<div class="kv"><span class="k">P&L réalisé</span><span class="v good">+$14.91</span></div>
+<div class="kv"><span class="k">P&L non réalisé</span><span class="v bad">$-66.31</span></div>
+<div class="kv"><span class="k">P&L total</span><span class="v bad">$-51.40</span></div>
+<div class="sep"></div>
+<div class="kv"><span class="k">USDC libre</span><span class="v">$709.28</span></div>
+<div class="kv"><span class="k">Valeur totale</span><span class="v" style="font-weight:700">$1,789.72</span></div>
+</div></div></div>
 <div class="card">
 <div class="card-header" style="border-left:4px solid #F59E0B">
-<span class="icon">💰</span><span class="card-title">Crypto</span>
-</div><div class="card-body"><i>Pas de données récentes</i></div></div>
+<span class="icon">📋</span><span class="card-title">To Do</span>
+</div><div class="card-body"><div class="todo-item">📌 AEGIS LIVE — MAJ 26 fév 21h08 (3 recos live)</div><div class="todo-item">📌 data.gouv.fr MCP — Config en place, serveur DOWN (26 fév 22h)</div><div class="todo-item">📌 NVIDIA Q4 FY2026 — RÉSULTATS SORTIS (25 fév ~22h30 Paris)</div><div class="todo-item">📌 ANALYSE PRM INTENTIONNISTES BUT — V3 EN COURS (26 fév)</div><div class="todo-item">📌 AEGIS LIVE — MAJ 25 fév 17h15</div><div class="todo-item">⬜ Étape 1</div><div class="todo-item">⬜ Étape 2</div><div class="todo-item">⬜ Étape 3</div><div class="todo-item">⬜ Tests passent</div><div class="todo-item">⬜ Code reviewé</div><div class="todo-item">⬜ Documenté</div></div></div>
 <div class="card">
 <div class="card-header" style="border-left:4px solid #3B82F6">
 <span class="icon">📅</span><span class="card-title">Agenda</span>
-</div><div class="card-body"><i>Pas de RDV</i></div></div>
+</div><div class="card-body"><i>Pas de RDV à venir</i></div></div>
 <div class="card">
 <div class="card-header" style="border-left:4px solid #8B5CF6">
-<span class="icon">⚙️</span><span class="card-title">Crons Actifs</span>
-</div><div class="card-body"><pre>ID                                   Name                     Schedule                         Next       Last       Status    Target    Agent     
-a1c5680e-cd7c-494e-b0ab-125b514ff63e Mission Control Dashb... every 30m                        in 19m     -          idle      main      default
-7cd48edb-5c27-4669-9e9d-102488d72d2b Sauvegarde mémoire 30min every 30m                        in 30m     &lt;1m ago    ok        main      main
-353a3d6b-de3e-422e-9e60-02b984f8cbf9 datagouv-mcp-check       every 3h                         in 38m     2h ago     ok        main      default
-a2fcb457-31c8-4aed-8fc7-778a5d8caebe AEGIS Live Report AM     cron 0 9 * * * @ Europe/Paris... in 8h      16h ago    ok        isolated  main
-8ef7353b-64dc-415e-8f94-86f12ff32f72 AEGIS Live Report PM     cron 0 20 * * * @ Europe/Pari... in 19h     5h ago     ok        isolated  main
-c4461121-61a7-4f97-828f-40a12120b638 DCA PEA Mensuel          cron 0 9 1 * * @ Europe/Paris... in 1d      -          idle      main      main
-a7a42f7d-6190-46f1-9566-7cf38da44f57 Rapport Finance Lundi    cron 30 8 * * 1 @ Europe/Pari... in 2d      5d ago     ok        isolated  main
-e0af648b-0bed-422a-8b96-e43d360e575a Prospection Engine Py... cron 30 8 * * 1-5 @ Europe/Pa... in 2d      16h ago    ok        isolated  main
-88a1374b-da75-4339-a178-4aaf50001411 Moteur Prospection Qu... cron 0 9 * * 1-5 @ Europe/Par... in 2d      16h ago    ok        isolated  main
-db0512b5-a257-4a0f-b32b-7e2c52bf08b4 Rapport Finance Jeudi    cron 30 8 * * 4 @ Europe/Pari... in 5d      2d ago     ok        isolated  main
-3f8e4983-fad2-48e5-b341-724fb6f2145a Relance France Travai... at 2026-04-14 08:00Z             in 45d     -          idle      main      main</pre></div></div>
+<span class="icon">⚙️</span><span class="card-title">Crons</span>
+</div><div class="card-body"><pre>{
+  &quot;jobs&quot;: [
+    {
+      &quot;id&quot;: &quot;a1c5680e-cd7c-494e-b0ab-125b514ff63e&quot;,
+      &quot;name&quot;: &quot;Mission Control Dashboard&quot;,
+      &quot;description&quot;: &quot;Regenerate mission-control.html every 30 min&quot;,
+      &quot;enabled&quot;: true,
+      &quot;createdAtMs&quot;: 1772234888469,
+      &quot;updatedAtMs&quot;: 1772234888469,
+      &quot;schedule&quot;: {
+        &quot;kind&quot;: &quot;every&quot;,
+        &quot;everyMs&quot;: 1800000,
+        &quot;anchorMs&quot;: 1772234888469
+      },
+      &quot;sessionTarget&quot;: &quot;main&quot;,
+      &quot;wakeMode&quot;: &quot;now&quot;,
+      &quot;payload&quot;: {
+        &quot;kind&quot;: &quot;systemEvent&quot;,</pre></div></div>
 <div class="card">
 <div class="card-header" style="border-left:4px solid #0EA5E9">
-<span class="icon">🎯</span><span class="card-title">Pipeline Commercial</span>
-</div><div class="card-body"><pre>Hot Pipe)
-
-### Negotiation (proche closing)
-| Client | Valeur | Type |
-|--------|--------|------|
-| AUDIKA | 12 000€ | NB |
-| MIFF Assurance | 38 000€ | NB |
-| GROUPE SCHMIDT | 35 000€ | Enrichissement |
-
-**Total Negotiation : ~85 000€**
-
-### Proposal (proposition envoyée)
-| Client | Valeur | Type |
-|--------|--------|------|
-| **FRANCE TRAVAIL** | **102 000€** | Enrichissement BtoB |
-| CAISSE D'EPARGNE | 21 000€ | NB |
-| MOBILIZE | 22 000€ | Data |
-| INDIGO | 20 000€ | PRM |
-| METLIFE | 18 000€ | CROSS (SMS) |
-| FDB | 17 500€ | NB |</pre></div></div>
+<span class="icon">🎯</span><span class="card-title">Pipeline</span>
+</div><div class="card-body"><div class="pipe-stage">Negotiation (proche closing)</div><div class="pipe-item"><span>AUDIKA</span><span class="pipe-val">12 000€</span></div><div class="pipe-item"><span>MIFF Assurance</span><span class="pipe-val">38 000€</span></div><div class="pipe-item"><span>GROUPE SCHMIDT</span><span class="pipe-val">35 000€</span></div><div class="pipe-total"><span>TOTAL Negotiation (proche closing)</span><span class="pipe-val">85 000€</span></div><div class="pipe-stage">Proposal (proposition envoyée)</div><div class="pipe-item"><span>FRANCE TRAVAIL</span><span class="pipe-val">102 000€</span></div><div class="pipe-item"><span>CAISSE D'EPARGNE</span><span class="pipe-val">21 000€</span></div><div class="pipe-item"><span>MOBILIZE</span><span class="pipe-val">22 000€</span></div><div class="pipe-item"><span>INDIGO</span><span class="pipe-val">20 000€</span></div><div class="pipe-item"><span>METLIFE</span><span class="pipe-val">18 000€</span></div><div class="pipe-item"><span>FDB</span><span class="pipe-val">17 500€</span></div><div class="pipe-item"><span>PAUL</span><span class="pipe-val">15 000€</span></div><div class="pipe-total"><span>TOTAL Proposal (proposition envoyée)</span><span class="pipe-val">215 500€</span></div><div class="pipe-stage">Presentation (RDV fait)</div><div class="pipe-item"><span>NATURE ET DÉCOUVERTES</span><span class="pipe-val">30 000€</span></div><div class="pipe-item"><span>BODEMER AUTO</span><span class="pipe-val">15 496€</span></div><div class="pipe-item"><span>COMPAGNIE DES ANIMAUX</span><span class="pipe-val">15 000€</span></div><div class="pipe-item"><span>LAZEO</span><span class="pipe-val">12 000€</span></div><div class="pipe-item"><span>AXA</span><span class="pipe-val">TBD</span></div><div class="pipe-item"><span>BYD</span><span class="pipe-val">TBD</span></div><div class="pipe-item"><span>Grain de Malice</span><span class="pipe-val">TBD</span></div><div class="pipe-item"><span>MAISON 123</span><span class="pipe-val">TBD</span></div><div class="pipe-item"><span>MR BRICOLAGE</span><span class="pipe-val">TBD</span></div><div class="pipe-item"><span>ORANGE BTOB</span><span class="pipe-val">TBD</span></div><div class="pipe-total"><span>TOTAL Presentation (RDV fait)</span><span class="pipe-val">72 500€</span></div></div></div>
 <div class="card">
 <div class="card-header" style="border-left:4px solid #10B981">
-<span class="icon">📈</span><span class="card-title">PEA Fortuneo</span>
-</div><div class="card-body"><pre>PEA Fortuneo : ~28 086€ (Finary live 22/02/2026)
-
-| ETF | Qté | PRU | Valorisation | Poids |
-|-----|-----|-----|-------------|-------|
-| PE500 (S&amp;P 500) | 246 | 48,77€ | 11 948€ | 42,5% |
-| PAEEM (MSCI Emerging) | 238 | 31,03€ | 7 690€ | 27,4% |
-| DCAM (MSCI World) | 1 174 | 5,51€ | 6 492€ | 23,1% |
-| PUST (Nasdaq-100) | 23 | 83,75€ | 1 956€ | 7,0% |
-
-✅ US (PE500+PUST) : 49,5% | Émergents : 27,4% | World : 23,1%
-
-#### PER Fortuneo : ~29 051€ (Finary live 22/02/2026)
-
-| Fonds | ISIN | Parts | Montant | PRU | Poids |
-|-------|------|-------|---------|-----|-------|</pre></div></div>
-<div class="card">
-<div class="card-header" style="border-left:4px solid #F59E0B">
-<span class="icon">⚡</span><span class="card-title">En Cours</span>
-</div><div class="card-body"><pre>ACTIF MAINTENANT
-
-### 🤖 AEGIS LIVE — MAJ 26 fév 21h08 (3 recos live)
-- Bot PID 94091 depuis 20h47, 91 ordres Binance
-- **RECO 1** : Ghost GC — 78 ghosts purgés, auto à chaque cycle + recalibrage
-- **RECO 2** : Cap sells +8% — 15 sells distants annulés (ETH débloqué)
-- **RECO 3** : Fill-up buys — USDC free \$590→\$81, tout déployé
-- Ordres : ETH 11B/20S, SOL 17B/9S, AVAX 14B/6S, LINK 10B/4S
-- 58 cycles, +\$12.25 réalisé, ~2.1 cycles/h ≈ \$10.69/jour
-- **Recos restantes** : 4 (allocator bonus), 5 (scoring dynamique), 6 (risk unrealized)
-- Claude Code pas configuré sur ce PC → à setup
-
-### 🌐 data.gouv.fr MCP — Config en place, serveur DOWN (26 fév 22h)
-- mcporter config : \`datagouv\` → \`https://mcp.data.gouv.fr/mcp\`
-- Serveur DOWN (302 → sorry.data.gouv.fr)
-- Check auto 3h (cron \`353a3d6b\`, auto-delete)
-- Use cases : enrichissement prospects, DVF immo, benchmarks sectoriels
-- Reminder 27/02 12h30 pour creuser les axes LDS
-
-### 📈 NVIDIA Q4 FY2026 — RÉSULTATS SORTIS (25 fév ~22h30 Paris)
-- Revenue &amp; EPS : BEAT (chiffres exacts à confirmer)
-- **Guidance Q1 : \$78B** (vs \$72B attendu par Wall Street) → GROS BEAT
-- Guidance exclut la Chine (encore plus impressionnant)
-- Networking +34% QoQ (supérieur au Data Center +19% QoQ)
-- NVDA after-hours : +3%, repassé au-dessus de \$200</pre></div></div>
+<span class="icon">📈</span><span class="card-title">PEA</span>
+</div><div class="card-body"><div class="pea-total">PEA : ~28 086€</div><div class="kv"><span class="k">PE500</span><span class="v">11 948€ (42,5%)</span></div><div class="kv"><span class="k">PAEEM</span><span class="v">7 690€ (27,4%)</span></div><div class="kv"><span class="k">PUST</span><span class="v">1 956€ (7,0%)</span></div></div></div>
 </div>
 </div>
 <script>
@@ -137,8 +107,7 @@ const H="7c984035a4d0997bababaf91df54c5f3c3655aa90e35ef7cd764a9a9e49e1936";
 async function sha(m){const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(m));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,"0")).join("")}
 function show(){document.getElementById("lock").style.display="none";document.getElementById("dash").style.display="block"}
 if(sessionStorage.getItem("mc")=="1")show();
-document.getElementById("btn").addEventListener("click",async function(e){
-e.preventDefault();
+document.getElementById("btn").addEventListener("click",async function(){
 const p=document.getElementById("pwd").value;
 const h=await sha(p);
 if(h===H){sessionStorage.setItem("mc","1");show()}
