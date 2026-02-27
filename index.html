@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mission Control</title>
+<style>
+  :root { --navy: #0F172A; --cyan: #0EA5E9; --green: #10B981; --amber: #F59E0B; --red: #EF4444; --bg: #F8FAFC; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--navy); }
+
+  /* Lock screen */
+  #lock { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+  #lock form { text-align: center; background: #fff; padding: 3rem 2.5rem; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+  #lock h2 { margin-bottom: 1.5rem; font-size: 1.5rem; }
+  #lock input { padding: 0.8rem 1.2rem; border: 2px solid #E2E8F0; border-radius: 8px; font-size: 1rem; width: 240px; text-align: center; }
+  #lock input:focus { outline: none; border-color: var(--cyan); }
+  #lock button { display: block; margin: 1rem auto 0; padding: 0.7rem 2rem; background: var(--cyan); color: #fff; border: none; border-radius: 8px; font-size: 1rem; font-weight: 700; cursor: pointer; }
+  #lock .err { color: var(--red); font-size: 0.85rem; margin-top: 0.8rem; display: none; }
+
+  /* Dashboard */
+  #dash { display: none; padding: 1.5rem; }
+  .header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 2px solid var(--cyan); flex-wrap: wrap; }
+  .header h1 { font-size: 1.6rem; }
+  .header .ts { color: #94A3B8; font-size: 0.85rem; margin-left: auto; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1rem; }
+  .card { background: #fff; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); overflow: hidden; }
+  .card-header { padding: 0.75rem 1rem; background: #F1F5F9; display: flex; align-items: center; gap: 0.5rem; }
+  .card-title { font-weight: 700; font-size: 0.9rem; }
+  .icon { font-size: 1.1rem; }
+  .card-body { padding: 0.8rem 1rem; font-size: 0.82rem; line-height: 1.6; }
+  .card-body pre { white-space: pre-wrap; word-break: break-word; font-size: 0.75rem; background: #F8FAFC; padding: 0.5rem; border-radius: 6px; max-height: 280px; overflow-y: auto; }
+  .badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 0.72rem; font-weight: 700; }
+  .badge-ok { background: #D1FAE5; color: #065F46; }
+  .badge-ko { background: #FEE2E2; color: #991B1B; }
+  details summary { cursor: pointer; color: var(--cyan); font-size: 0.78rem; margin-top: 0.4rem; }
+  @media (max-width: 500px) { .grid { grid-template-columns: 1fr; } body { font-size: 14px; } #dash { padding: 0.8rem; } }
+</style>
+</head>
+<body>
+
+<div id="lock">
+  <form onsubmit="return unlock()">
+    <h2>🎛️ Mission Control</h2>
+    <input type="password" id="pwd" placeholder="Mot de passe" autofocus>
+    <button type="submit">Entrer</button>
+    <div class="err" id="err">Mot de passe incorrect</div>
+  </form>
+</div>
+
+<div id="dash">
+  <div class="header">
+    <h1>🎛️ Mission Control</h1>
+    <span class="ts" id="updated"></span>
+  </div>
+  <div class="grid" id="cards"></div>
+</div>
+
+<script>
+// Simple password hash check (SHA-256 of password)
+// Not crypto-grade but prevents casual access
+const HASH = "%%HASH%%";
+
+async function sha256(msg) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+async function unlock() {
+  const pwd = document.getElementById('pwd').value;
+  const h = await sha256(pwd);
+  if (h === HASH) {
+    sessionStorage.setItem('mc_auth', '1');
+    showDash();
+  } else {
+    document.getElementById('err').style.display = 'block';
+  }
+  return false;
+}
+
+function showDash() {
+  document.getElementById('lock').style.display = 'none';
+  document.getElementById('dash').style.display = 'block';
+}
+
+// Auto-unlock if already authed this session
+if (sessionStorage.getItem('mc_auth') === '1') showDash();
+
+// Dashboard data is injected by the generator script
+const DATA = %%DATA%%;
+document.getElementById('updated').textContent = 'Mis à jour : ' + DATA.updated;
+
+const colors = { aegis: '#10B981', crypto: '#F59E0B', agenda: '#3B82F6', crons: '#8B5CF6', pipeline: '#0EA5E9', pea: '#10B981', actif: '#F59E0B' };
+let html = '';
+for (const card of DATA.cards) {
+  const c = colors[card.id] || '#0EA5E9';
+  html += `<div class="card">
+    <div class="card-header" style="border-left:4px solid ${c}">
+      <span class="icon">${card.icon}</span>
+      <span class="card-title">${card.title}</span>
+    </div>
+    <div class="card-body">${card.html}</div>
+  </div>`;
+}
+document.getElementById('cards').innerHTML = html;
+</script>
+</body>
+</html>
