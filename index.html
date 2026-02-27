@@ -41,6 +41,8 @@ details:not([open]) .chevron{transform:rotate(-90deg)}
 .pipe-val{font-weight:600}
 .pipe-total{display:flex;justify-content:space-between;font-weight:700;background:#F1F5F9;border-radius:4px;padding:3px 6px;margin:3px 0;font-size:.78rem}
 .pea-total{font-size:1rem;font-weight:700;color:var(--cyan);margin-bottom:.4rem}
+.patri-section{font-weight:700;color:var(--cyan);font-size:.85rem;padding:4px 0;border-bottom:1px solid #E2E8F0;margin-bottom:2px}
+.patri-total{font-weight:700;font-size:.95rem;color:var(--navy);margin-top:8px;padding:6px 8px;background:#F1F5F9;border-radius:6px;text-align:center}
 .alloc{margin-top:.4rem;padding:3px 6px;background:#F1F5F9;border-radius:5px;font-size:.75rem}
 .todo-item{padding:3px 0;border-bottom:1px solid #F1F5F9}
 .todo-done{padding:3px 0;border-bottom:1px solid #F1F5F9;color:#94A3B8;text-decoration:line-through}
@@ -53,7 +55,7 @@ details:not([open]) .chevron{transform:rotate(-90deg)}
 <div id="err">Mot de passe incorrect</div>
 </div></div>
 <div id="dash">
-<div class="header"><h1>🎛️ Mission Control</h1><span class="ts">Mis à jour : 28/02/2026 00:50</span></div>
+<div class="header"><h1>🎛️ Mission Control</h1><span class="ts">Mis à jour : 28/02/2026 00:57</span></div>
 <div class="grid"><div class="card">
 <details open>
 <summary class="card-header" style="border-left:4px solid #10B981">
@@ -61,13 +63,13 @@ details:not([open]) .chevron{transform:rotate(-90deg)}
 <span class="chevron">▾</span>
 </summary>
 <div class="card-body"><span class="badge badge-ok">Running</span> PID 104783 · 50 ordres
-<div class="metrics"><div class="kv"><span class="k">ETH</span><span class="v">$1,929.92 ↗️</span></div><div class="kv"><span class="k">SOL</span><span class="v">$81.82 ↗️</span></div><div class="kv"><span class="k">AVAX</span><span class="v">$8.96 ↗️</span></div><div class="kv"><span class="k">LINK</span><span class="v">$8.70 ↘️</span></div><div class="sep"></div>
+<div class="metrics"><div class="kv"><span class="k">ETH</span><span class="v">$1,931.36 ↗️</span></div><div class="kv"><span class="k">SOL</span><span class="v">$82.06 ↗️</span></div><div class="kv"><span class="k">AVAX</span><span class="v">$8.95 ↘️</span></div><div class="kv"><span class="k">LINK</span><span class="v">$8.71 ↗️</span></div><div class="sep"></div>
 <div class="kv"><span class="k">P&L réalisé</span><span class="v good">+$14.91</span></div>
-<div class="kv"><span class="k">P&L non réalisé</span><span class="v bad">$-67.35</span></div>
-<div class="kv"><span class="k">P&L total</span><span class="v bad">$-52.44</span></div>
+<div class="kv"><span class="k">P&L non réalisé</span><span class="v bad">$-65.41</span></div>
+<div class="kv"><span class="k">P&L total</span><span class="v bad">$-50.50</span></div>
 <div class="sep"></div>
 <div class="kv"><span class="k">USDC libre</span><span class="v">$709.28</span></div>
-<div class="kv"><span class="k">Valeur totale</span><span class="v" style="font-weight:700">$1,788.68</span></div>
+<div class="kv"><span class="k">Valeur totale</span><span class="v" style="font-weight:700">$1,790.62</span></div>
 </div></div>
 </details></div><div class="card">
 <details open>
@@ -122,10 +124,24 @@ details:not([open]) .chevron{transform:rotate(-90deg)}
 </details></div><div class="card">
 <details open>
 <summary class="card-header" style="border-left:4px solid #10B981">
-<span class="icon">📈</span><span class="card-title">PEA</span>
+<span class="icon">💰</span><span class="card-title">Patrimoine</span>
 <span class="chevron">▾</span>
 </summary>
-<div class="card-body"><div class="pea-total">PEA : ~28 086€</div><div class="kv"><span class="k">PE500</span><span class="v">11 948€ (42,5%)</span></div><div class="kv"><span class="k">PAEEM</span><span class="v">7 690€ (27,4%)</span></div><div class="kv"><span class="k">PUST</span><span class="v">1 956€ (7,0%)</span></div></div>
+<div class="card-body"><div class="patri-section">PEA Fortuneo — 28 086€</div>
+<div class="kv"><span class="k">PE500 (S&P 500)</span><span class="v">11 948€ (42,5%)</span></div>
+<div class="kv"><span class="k">PAEEM (MSCI Emerging)</span><span class="v">7 690€ (27,4%)</span></div>
+<div class="kv"><span class="k">PUST (Nasdaq-100)</span><span class="v">1 956€ (7,0%)</span></div>
+<div class="alloc">🇺🇸 49,5% · 🌏 27,4% · 🌍 23,1%</div>
+<div class="patri-section" style="margin-top:8px">PER Fortuneo — 29 051€</div>
+<div class="kv"><span class="k">MSCI World</span><span class="v">16 491€ (56,8%)</span></div>
+<div class="kv"><span class="k">Nasdaq-100 SWAP</span><span class="v">6 355€ (21,9%)</span></div>
+<div class="kv"><span class="k">MSCI Emerging</span><span class="v">6 205€ (21,4%)</span></div>
+<div class="alloc">🌍 56,8% · 💻 21,9% · 🌏 21,4%</div>
+<div class="patri-section" style="margin-top:8px">Assurances Vie</div>
+<div class="kv"><span class="k">Evoluvie IV (fonds euro)</span><span class="v">403,48 €</span></div>
+<div class="kv"><span class="k">Evoluvie IV (fonds actions)</span><span class="v">220,25 €</span></div>
+<div class="kv" style="color:#94A3B8;font-style:italic"><span class="k">Spirit 2 / Lucya / Essentiel</span><span class="v">À ouvrir</span></div>
+<div class="patri-total">Total patrimoine : 136 500€</div></div>
 </details></div></div>
 </div>
 <script>
