@@ -1,108 +1,148 @@
 <!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="fr"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Mission Control</title>
 <style>
-  :root { --navy: #0F172A; --cyan: #0EA5E9; --green: #10B981; --amber: #F59E0B; --red: #EF4444; --bg: #F8FAFC; }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--navy); }
-
-  /* Lock screen */
-  #lock { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
-  #lock form { text-align: center; background: #fff; padding: 3rem 2.5rem; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
-  #lock h2 { margin-bottom: 1.5rem; font-size: 1.5rem; }
-  #lock input { padding: 0.8rem 1.2rem; border: 2px solid #E2E8F0; border-radius: 8px; font-size: 1rem; width: 240px; text-align: center; }
-  #lock input:focus { outline: none; border-color: var(--cyan); }
-  #lock button { display: block; margin: 1rem auto 0; padding: 0.7rem 2rem; background: var(--cyan); color: #fff; border: none; border-radius: 8px; font-size: 1rem; font-weight: 700; cursor: pointer; }
-  #lock .err { color: var(--red); font-size: 0.85rem; margin-top: 0.8rem; display: none; }
-
-  /* Dashboard */
-  #dash { display: none; padding: 1.5rem; }
-  .header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 2px solid var(--cyan); flex-wrap: wrap; }
-  .header h1 { font-size: 1.6rem; }
-  .header .ts { color: #94A3B8; font-size: 0.85rem; margin-left: auto; }
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1rem; }
-  .card { background: #fff; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); overflow: hidden; }
-  .card-header { padding: 0.75rem 1rem; background: #F1F5F9; display: flex; align-items: center; gap: 0.5rem; }
-  .card-title { font-weight: 700; font-size: 0.9rem; }
-  .icon { font-size: 1.1rem; }
-  .card-body { padding: 0.8rem 1rem; font-size: 0.82rem; line-height: 1.6; }
-  .card-body pre { white-space: pre-wrap; word-break: break-word; font-size: 0.75rem; background: #F8FAFC; padding: 0.5rem; border-radius: 6px; max-height: 280px; overflow-y: auto; }
-  .badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 0.72rem; font-weight: 700; }
-  .badge-ok { background: #D1FAE5; color: #065F46; }
-  .badge-ko { background: #FEE2E2; color: #991B1B; }
-  details summary { cursor: pointer; color: var(--cyan); font-size: 0.78rem; margin-top: 0.4rem; }
-  @media (max-width: 500px) { .grid { grid-template-columns: 1fr; } body { font-size: 14px; } #dash { padding: 0.8rem; } }
-</style>
-</head>
-<body>
-
-<div id="lock">
-  <form onsubmit="return unlock()">
-    <h2>🎛️ Mission Control</h2>
-    <input type="password" id="pwd" placeholder="Mot de passe" autofocus>
-    <button type="submit">Entrer</button>
-    <div class="err" id="err">Mot de passe incorrect</div>
-  </form>
-</div>
-
+:root{--navy:#0F172A;--cyan:#0EA5E9;--bg:#F8FAFC}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--navy)}
+#lock{display:flex;align-items:center;justify-content:center;min-height:100vh}
+#lock>div{text-align:center;background:#fff;padding:3rem 2.5rem;border-radius:16px;box-shadow:0 4px 24px rgba(0,0,0,.08)}
+#lock h2{margin-bottom:1.5rem;font-size:1.5rem}
+#lock input{padding:.8rem 1.2rem;border:2px solid #E2E8F0;border-radius:8px;font-size:1rem;width:240px;text-align:center}
+#lock input:focus{outline:none;border-color:var(--cyan)}
+#lock button{display:block;margin:1rem auto 0;padding:.7rem 2rem;background:var(--cyan);color:#fff;border:none;border-radius:8px;font-size:1rem;font-weight:700;cursor:pointer}
+#err{color:#EF4444;font-size:.85rem;margin-top:.8rem;display:none}
+#dash{display:none;padding:1.5rem}
+.header{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:2px solid var(--cyan);flex-wrap:wrap}
+.header h1{font-size:1.6rem}.header .ts{color:#94A3B8;font-size:.85rem;margin-left:auto}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:1rem}
+.card{background:#fff;border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,.08);overflow:hidden}
+.card-header{padding:.75rem 1rem;background:#F1F5F9;display:flex;align-items:center;gap:.5rem}
+.card-title{font-weight:700;font-size:.9rem}.icon{font-size:1.1rem}
+.card-body{padding:.8rem 1rem;font-size:.82rem;line-height:1.6}
+.card-body pre{white-space:pre-wrap;word-break:break-word;font-size:.75rem;background:#F8FAFC;padding:.5rem;border-radius:6px;max-height:280px;overflow-y:auto}
+.badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:.72rem;font-weight:700}
+.badge-ok{background:#D1FAE5;color:#065F46}.badge-ko{background:#FEE2E2;color:#991B1B}
+@media(max-width:500px){.grid{grid-template-columns:1fr}#dash{padding:.8rem}}
+</style></head><body>
+<div id="lock"><div>
+<h2>🎛️ Mission Control</h2>
+<input type="password" id="pwd" placeholder="Mot de passe" autofocus>
+<button id="btn">Entrer</button>
+<div id="err">Mot de passe incorrect</div>
+</div></div>
 <div id="dash">
-  <div class="header">
-    <h1>🎛️ Mission Control</h1>
-    <span class="ts" id="updated"></span>
-  </div>
-  <div class="grid" id="cards"></div>
+<div class="header"><h1>🎛️ Mission Control</h1><span class="ts">Mis à jour : 28/02/2026 00:35</span></div>
+<div class="grid"><div class="card">
+<div class="card-header" style="border-left:4px solid #10B981">
+<span class="icon">🤖</span><span class="card-title">AEGIS Live</span>
+</div><div class="card-body"><span class="badge badge-ok">Running</span> PID: 104783<br><b>P&L réalisé:</b> $?<br><b>Ordres actifs:</b> ?</div></div>
+<div class="card">
+<div class="card-header" style="border-left:4px solid #F59E0B">
+<span class="icon">💰</span><span class="card-title">Crypto</span>
+</div><div class="card-body"><i>Pas de données récentes</i></div></div>
+<div class="card">
+<div class="card-header" style="border-left:4px solid #3B82F6">
+<span class="icon">📅</span><span class="card-title">Agenda</span>
+</div><div class="card-body"><i>Pas de RDV</i></div></div>
+<div class="card">
+<div class="card-header" style="border-left:4px solid #8B5CF6">
+<span class="icon">⚙️</span><span class="card-title">Crons Actifs</span>
+</div><div class="card-body"><pre>ID                                   Name                     Schedule                         Next       Last       Status    Target    Agent     
+7cd48edb-5c27-4669-9e9d-102488d72d2b Sauvegarde mémoire 30min every 30m                        in 4m      26m ago    ok        main      main
+a1c5680e-cd7c-494e-b0ab-125b514ff63e Mission Control Dashb... every 30m                        in 23m     -          idle      main      default
+353a3d6b-de3e-422e-9e60-02b984f8cbf9 datagouv-mcp-check       every 3h                         in 42m     2h ago     ok        main      default
+a2fcb457-31c8-4aed-8fc7-778a5d8caebe AEGIS Live Report AM     cron 0 9 * * * @ Europe/Paris... in 8h      16h ago    ok        isolated  main
+8ef7353b-64dc-415e-8f94-86f12ff32f72 AEGIS Live Report PM     cron 0 20 * * * @ Europe/Pari... in 19h     5h ago     ok        isolated  main
+c4461121-61a7-4f97-828f-40a12120b638 DCA PEA Mensuel          cron 0 9 1 * * @ Europe/Paris... in 1d      -          idle      main      main
+a7a42f7d-6190-46f1-9566-7cf38da44f57 Rapport Finance Lundi    cron 30 8 * * 1 @ Europe/Pari... in 2d      5d ago     ok        isolated  main
+e0af648b-0bed-422a-8b96-e43d360e575a Prospection Engine Py... cron 30 8 * * 1-5 @ Europe/Pa... in 2d      16h ago    ok        isolated  main
+88a1374b-da75-4339-a178-4aaf50001411 Moteur Prospection Qu... cron 0 9 * * 1-5 @ Europe/Par... in 2d      16h ago    ok        isolated  main
+db0512b5-a257-4a0f-b32b-7e2c52bf08b4 Rapport Finance Jeudi    cron 30 8 * * 4 @ Europe/Pari... in 5d      2d ago     ok        isolated  main
+3f8e4983-fad2-48e5-b341-724fb6f2145a Relance France Travai... at 2026-04-14 08:00Z             in 45d     -          idle      main      main</pre></div></div>
+<div class="card">
+<div class="card-header" style="border-left:4px solid #0EA5E9">
+<span class="icon">🎯</span><span class="card-title">Pipeline Commercial</span>
+</div><div class="card-body"><pre>Hot Pipe)
+
+### Negotiation (proche closing)
+| Client | Valeur | Type |
+|--------|--------|------|
+| AUDIKA | 12 000€ | NB |
+| MIFF Assurance | 38 000€ | NB |
+| GROUPE SCHMIDT | 35 000€ | Enrichissement |
+
+**Total Negotiation : ~85 000€**
+
+### Proposal (proposition envoyée)
+| Client | Valeur | Type |
+|--------|--------|------|
+| **FRANCE TRAVAIL** | **102 000€** | Enrichissement BtoB |
+| CAISSE D'EPARGNE | 21 000€ | NB |
+| MOBILIZE | 22 000€ | Data |
+| INDIGO | 20 000€ | PRM |
+| METLIFE | 18 000€ | CROSS (SMS) |
+| FDB | 17 500€ | NB |</pre></div></div>
+<div class="card">
+<div class="card-header" style="border-left:4px solid #10B981">
+<span class="icon">📈</span><span class="card-title">PEA Fortuneo</span>
+</div><div class="card-body"><pre>PEA Fortuneo : ~28 086€ (Finary live 22/02/2026)
+
+| ETF | Qté | PRU | Valorisation | Poids |
+|-----|-----|-----|-------------|-------|
+| PE500 (S&amp;P 500) | 246 | 48,77€ | 11 948€ | 42,5% |
+| PAEEM (MSCI Emerging) | 238 | 31,03€ | 7 690€ | 27,4% |
+| DCAM (MSCI World) | 1 174 | 5,51€ | 6 492€ | 23,1% |
+| PUST (Nasdaq-100) | 23 | 83,75€ | 1 956€ | 7,0% |
+
+✅ US (PE500+PUST) : 49,5% | Émergents : 27,4% | World : 23,1%
+
+#### PER Fortuneo : ~29 051€ (Finary live 22/02/2026)
+
+| Fonds | ISIN | Parts | Montant | PRU | Poids |
+|-------|------|-------|---------|-----|-------|</pre></div></div>
+<div class="card">
+<div class="card-header" style="border-left:4px solid #F59E0B">
+<span class="icon">⚡</span><span class="card-title">En Cours</span>
+</div><div class="card-body"><pre>ACTIF MAINTENANT
+
+### 🤖 AEGIS LIVE — MAJ 26 fév 21h08 (3 recos live)
+- Bot PID 94091 depuis 20h47, 91 ordres Binance
+- **RECO 1** : Ghost GC — 78 ghosts purgés, auto à chaque cycle + recalibrage
+- **RECO 2** : Cap sells +8% — 15 sells distants annulés (ETH débloqué)
+- **RECO 3** : Fill-up buys — USDC free \$590→\$81, tout déployé
+- Ordres : ETH 11B/20S, SOL 17B/9S, AVAX 14B/6S, LINK 10B/4S
+- 58 cycles, +\$12.25 réalisé, ~2.1 cycles/h ≈ \$10.69/jour
+- **Recos restantes** : 4 (allocator bonus), 5 (scoring dynamique), 6 (risk unrealized)
+- Claude Code pas configuré sur ce PC → à setup
+
+### 🌐 data.gouv.fr MCP — Config en place, serveur DOWN (26 fév 22h)
+- mcporter config : \`datagouv\` → \`https://mcp.data.gouv.fr/mcp\`
+- Serveur DOWN (302 → sorry.data.gouv.fr)
+- Check auto 3h (cron \`353a3d6b\`, auto-delete)
+- Use cases : enrichissement prospects, DVF immo, benchmarks sectoriels
+- Reminder 27/02 12h30 pour creuser les axes LDS
+
+### 📈 NVIDIA Q4 FY2026 — RÉSULTATS SORTIS (25 fév ~22h30 Paris)
+- Revenue &amp; EPS : BEAT (chiffres exacts à confirmer)
+- **Guidance Q1 : \$78B** (vs \$72B attendu par Wall Street) → GROS BEAT
+- Guidance exclut la Chine (encore plus impressionnant)
+- Networking +34% QoQ (supérieur au Data Center +19% QoQ)
+- NVDA after-hours : +3%, repassé au-dessus de \$200</pre></div></div>
 </div>
-
+</div>
 <script>
-// Simple password hash check (SHA-256 of password)
-// Not crypto-grade but prevents casual access
-const HASH = ""7c984035a4d0997bababaf91df54c5f3c3655aa90e35ef7cd764a9a9e49e1936"";
-
-async function sha256(msg) {
-  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
-  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
-}
-
-async function unlock() {
-  const pwd = document.getElementById('pwd').value;
-  const h = await sha256(pwd);
-  if (h === HASH) {
-    sessionStorage.setItem('mc_auth', '1');
-    showDash();
-  } else {
-    document.getElementById('err').style.display = 'block';
-  }
-  return false;
-}
-
-function showDash() {
-  document.getElementById('lock').style.display = 'none';
-  document.getElementById('dash').style.display = 'block';
-}
-
-// Auto-unlock if already authed this session
-if (sessionStorage.getItem('mc_auth') === '1') showDash();
-
-// Dashboard data is injected by the generator script
-const DATA = {"updated": "28/02/2026 00:31", "cards": [{"id": "aegis", "icon": "🤖", "title": "AEGIS Live", "html": "<span class=\"badge badge-ok\">Running</span> PID: 104783<br>\n<b>P&L réalisé:</b> $?<br>\n<b>Ordres actifs:</b> ?<br>\n<details><summary>Derniers logs</summary><pre>6-02-28 00:28:38 [INFO] aegis.allocator: Allocation SOL/USDC: score=0.33, pct=27.8%, capital=$197.06 [RANGING]\n2026-02-28 00:28:38 [INFO] aegis.allocator: Allocation AVAX/USDC: score=0.30, pct=26.0%, capital=$184.52 [RANGING]\n2026-02-28 00:28:38 [INFO] aegis.allocator: Allocation LINK/USDC: score=0.24, pct=20.1%, capital=$142.71 [TRENDING_DOWN]\n2026-02-28 00:28:38 [INFO] aegis: \n🤖 AEGIS 🔴 LIVE — 2026-02-27 23:28 UTC\n\n💹 PRIX\n• ETH: $1,929.45 📊 RANGING\n• SOL: $81.59 📊 RANGING\n• AVAX: $8.94 📊 RANGING\n• LINK: $8.70 📉 TRENDING_DOWN\n\n💰 ALLOCATION\n• ETH: $184.99 (26%) — score 0.31\n• SOL: $197.06 (28%) — score 0.33\n• AVAX: $184.52 (26%) — score 0.30\n• LINK: $142.71 (20%) — score 0.24\n\n📈 P&amp;L\n• Réalisé: $+14.91\n• Non réalisé: $-67.79\n• Total: $-52.88\n\n💵 USDC libre: $709.28\n📦 Valeur totale: $1,788.24</pre></details>"}, {"id": "crypto", "icon": "💰", "title": "Crypto", "html": "<i>Pas de données récentes</i>"}, {"id": "agenda", "icon": "📅", "title": "Agenda", "html": "<i>Pas de RDV à venir</i>"}, {"id": "crons", "icon": "⚙️", "title": "Crons Actifs", "html": "<pre>ID                                   Name                     Schedule                         Next       Last       Status    Target    Agent     \n7cd48edb-5c27-4669-9e9d-102488d72d2b Sauvegarde mémoire 30min every 30m                        in 8m      22m ago    ok        main      main\na1c5680e-cd7c-494e-b0ab-125b514ff63e Mission Control Dashb... every 30m                        in 27m     -          idle      main      default\n353a3d6b-de3e-422e-9e60-02b984f8cbf9 datagouv-mcp-check       every 3h                         in 46m     2h ago     ok        main      default\na2fcb457-31c8-4aed-8fc7-778a5d8caebe AEGIS Live Report AM     cron 0 9 * * * @ Europe/Paris... in 8h      16h ago    ok        isolated  main\n8ef7353b-64dc-415e-8f94-86f12ff32f72 AEGIS Live Report PM     cron 0 20 * * * @ Europe/Pari... in 19h     5h ago     ok        isolated  main\nc4461121-61a7-4f97-828f-40a12120b638 DCA PEA Mensuel          cron 0 9 1 * * @ Europe/Paris... in 1d      -          idle      main      main\na7a42f7d-6190-46f1-9566-7cf38da44f57 Rapport Finance Lundi    cron 30 8 * * 1 @ Europe/Pari... in 2d      5d ago     ok        isolated  main\ne0af648b-0bed-422a-8b96-e43d360e575a Prospection Engine Py... cron 30 8 * * 1-5 @ Europe/Pa... in 2d      16h ago    ok        isolated  main\n88a1374b-da75-4339-a178-4aaf50001411 Moteur Prospection Qu... cron 0 9 * * 1-5 @ Europe/Par... in 2d      16h ago    ok        isolated  main\ndb0512b5-a257-4a0f-b32b-7e2c52bf08b4 Rapport Finance Jeudi    cron 30 8 * * 4 @ Europe/Pari... in 5d      2d ago     ok        isolated  main\n3f8e4983-fad2-48e5-b341-724fb6f2145a Relance France Travai... at 2026-04-14 08:00Z             in 45d     -          idle      main      main</pre>"}, {"id": "pipeline", "icon": "🎯", "title": "Pipeline Commercial", "html": "<pre>Hot Pipe)\n\n### Negotiation (proche closing)\n| Client | Valeur | Type |\n|--------|--------|------|\n| AUDIKA | 12 000€ | NB |\n| MIFF Assurance | 38 000€ | NB |\n| GROUPE SCHMIDT | 35 000€ | Enrichissement |\n\n**Total Negotiation : ~85 000€**\n\n### Proposal (proposition envoyée)\n| Client | Valeur | Type |\n|--------|--------|------|\n| **FRANCE TRAVAIL** | **102 000€** | Enrichissement BtoB |\n| CAISSE D'EPARGNE | 21 000€ | NB |\n| MOBILIZE | 22 000€ | Data |\n| INDIGO | 20 000€ | PRM |\n| METLIFE | 18 000€ | CROSS (SMS) |\n| FDB | 17 500€ | NB |</pre>"}, {"id": "pea", "icon": "📈", "title": "PEA Fortuneo", "html": "<pre>PEA Fortuneo : ~28 086€ (Finary live 22/02/2026)\n\n| ETF | Qté | PRU | Valorisation | Poids |\n|-----|-----|-----|-------------|-------|\n| PE500 (S&amp;P 500) | 246 | 48,77€ | 11 948€ | 42,5% |\n| PAEEM (MSCI Emerging) | 238 | 31,03€ | 7 690€ | 27,4% |\n| DCAM (MSCI World) | 1 174 | 5,51€ | 6 492€ | 23,1% |\n| PUST (Nasdaq-100) | 23 | 83,75€ | 1 956€ | 7,0% |\n\n✅ US (PE500+PUST) : 49,5% | Émergents : 27,4% | World : 23,1%\n\n#### PER Fortuneo : ~29 051€ (Finary live 22/02/2026)\n\n| Fonds | ISIN | Parts | Montant | PRU | Poids |\n|-------|------|-------|---------|-----|-------|</pre>"}, {"id": "actif", "icon": "⚡", "title": "En Cours", "html": "<pre>ACTIF MAINTENANT\n\n### 🤖 AEGIS LIVE — MAJ 26 fév 21h08 (3 recos live)\n- Bot PID 94091 depuis 20h47, 91 ordres Binance\n- **RECO 1** : Ghost GC — 78 ghosts purgés, auto à chaque cycle + recalibrage\n- **RECO 2** : Cap sells +8% — 15 sells distants annulés (ETH débloqué)\n- **RECO 3** : Fill-up buys — USDC free $590→$81, tout déployé\n- Ordres : ETH 11B/20S, SOL 17B/9S, AVAX 14B/6S, LINK 10B/4S\n- 58 cycles, +$12.25 réalisé, ~2.1 cycles/h ≈ $10.69/jour\n- **Recos restantes** : 4 (allocator bonus), 5 (scoring dynamique), 6 (risk unrealized)\n- Claude Code pas configuré sur ce PC → à setup\n\n### 🌐 data.gouv.fr MCP — Config en place, serveur DOWN (26 fév 22h)\n- mcporter config : `datagouv` → `https://mcp.data.gouv.fr/mcp`\n- Serveur DOWN (302 → sorry.data.gouv.fr)\n- Check auto 3h (cron `353a3d6b`, auto-delete)\n- Use cases : enrichissement prospects, DVF immo, benchmarks sectoriels\n- Reminder 27/02 12h30 pour creuser les axes LDS\n\n### 📈 NVIDIA Q4 FY2026 — RÉSULTATS SORTIS (25 fév ~22h30 Paris)\n- Revenue &amp; EPS : BEAT (chiffres exacts à confirmer)\n- **Guidance Q1 : $78B** (vs $72B attendu par Wall Street) → GROS BEAT\n- Guidance exclut la Chine (encore plus impressionnant)\n- Networking +34% QoQ (supérieur au Data Center +19% QoQ)\n- NVDA after-hours : +3%, repassé au-dessus de $200</pre>"}]};
-document.getElementById('updated').textContent = 'Mis à jour : ' + DATA.updated;
-
-const colors = { aegis: '#10B981', crypto: '#F59E0B', agenda: '#3B82F6', crons: '#8B5CF6', pipeline: '#0EA5E9', pea: '#10B981', actif: '#F59E0B' };
-let html = '';
-for (const card of DATA.cards) {
-  const c = colors[card.id] || '#0EA5E9';
-  html += `<div class="card">
-    <div class="card-header" style="border-left:4px solid ${c}">
-      <span class="icon">${card.icon}</span>
-      <span class="card-title">${card.title}</span>
-    </div>
-    <div class="card-body">${card.html}</div>
-  </div>`;
-}
-document.getElementById('cards').innerHTML = html;
-</script>
-</body>
-</html>
+const H="7c984035a4d0997bababaf91df54c5f3c3655aa90e35ef7cd764a9a9e49e1936";
+async function sha(m){const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(m));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,"0")).join("")}
+function show(){document.getElementById("lock").style.display="none";document.getElementById("dash").style.display="block"}
+if(sessionStorage.getItem("mc")=="1")show();
+document.getElementById("btn").addEventListener("click",async function(e){
+e.preventDefault();
+const p=document.getElementById("pwd").value;
+const h=await sha(p);
+if(h===H){sessionStorage.setItem("mc","1");show()}
+else{document.getElementById("err").style.display="block"}
+});
+document.getElementById("pwd").addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();document.getElementById("btn").click()}});
+</script></body></html>
