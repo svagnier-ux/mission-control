@@ -3,157 +3,360 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Mission Control</title>
 <style>
-:root{--navy:#0F172A;--cyan:#0EA5E9;--bg:#F8FAFC}
+:root{--navy:#0F172A;--cyan:#0EA5E9;--green:#10B981;--amber:#F59E0B;--red:#EF4444;--bg:#F8FAFC;--card:#fff;--border:#E2E8F0;--muted:#94A3B8}
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--navy)}
+
+/* Lock */
 #lock{display:flex;align-items:center;justify-content:center;min-height:100vh}
-#lock>div{text-align:center;background:#fff;padding:3rem 2.5rem;border-radius:16px;box-shadow:0 4px 24px rgba(0,0,0,.08)}
+#lock>div{text-align:center;background:var(--card);padding:3rem 2.5rem;border-radius:16px;box-shadow:0 4px 24px rgba(0,0,0,.08)}
 #lock h2{margin-bottom:1.5rem;font-size:1.5rem}
-#lock input{padding:.8rem 1.2rem;border:2px solid #E2E8F0;border-radius:8px;font-size:1rem;width:240px;text-align:center}
+#lock input{padding:.8rem 1.2rem;border:2px solid var(--border);border-radius:8px;font-size:1rem;width:240px;text-align:center}
 #lock input:focus{outline:none;border-color:var(--cyan)}
-#lock .btn{display:block;margin:1rem auto 0;padding:.7rem 2rem;background:var(--cyan);color:#fff;border:none;border-radius:8px;font-size:1rem;font-weight:700;cursor:pointer}
-#err{color:#EF4444;font-size:.85rem;margin-top:.8rem;display:none}
-#dash{display:none;padding:1.2rem;max-width:1100px;margin:0 auto}
-.header{display:flex;align-items:center;gap:1rem;margin-bottom:1.2rem;padding-bottom:.8rem;border-bottom:2px solid var(--cyan);flex-wrap:wrap}
-.header h1{font-size:1.4rem}.header .ts{color:#94A3B8;font-size:.78rem;margin-left:auto}
+.btn{display:inline-block;padding:.6rem 1.5rem;background:var(--cyan);color:#fff;border:none;border-radius:8px;font-size:.9rem;font-weight:700;cursor:pointer}
+.btn:active{opacity:.8}
+#err{color:var(--red);font-size:.85rem;margin-top:.8rem;display:none}
+
+/* Dashboard */
+#dash{display:none;padding:1rem;max-width:1100px;margin:0 auto}
+.header{display:flex;align-items:center;gap:.8rem;margin-bottom:1rem;padding-bottom:.7rem;border-bottom:2px solid var(--cyan);flex-wrap:wrap}
+.header h1{font-size:1.3rem}.header .ts{color:var(--muted);font-size:.75rem;margin-left:auto}
+.header .settings-btn{background:none;border:none;font-size:1.2rem;cursor:pointer;padding:4px}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:.8rem}
-.card{background:#fff;border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.06);overflow:hidden}
-.card-header{padding:.65rem .9rem;background:#F1F5F9;display:flex;align-items:center;gap:.5rem;cursor:pointer;list-style:none;user-select:none}
+
+/* Cards */
+.card{background:var(--card);border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.06);overflow:hidden}
+.card-header{padding:.6rem .8rem;background:#F1F5F9;display:flex;align-items:center;gap:.4rem;cursor:pointer;list-style:none;user-select:none}
 .card-header::-webkit-details-marker{display:none}
-.card-title{font-weight:700;font-size:.85rem;flex:1}.icon{font-size:1rem}
-.chevron{color:#94A3B8;font-size:.7rem;transition:transform .2s}
-details:not([open]) .chevron{transform:rotate(-90deg)}
-.card-body{padding:.7rem .9rem;font-size:.8rem;line-height:1.65}
-.badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:.7rem;font-weight:700}
+.card-title{font-weight:700;font-size:.82rem;flex:1}.icon{font-size:1rem}
+.chev{color:var(--muted);font-size:.65rem;transition:transform .2s}
+details:not([open]) .chev{transform:rotate(-90deg)}
+.card-body{padding:.6rem .8rem;font-size:.78rem;line-height:1.6;max-height:320px;overflow-y:auto}
+
+/* Common */
+.badge{display:inline-block;padding:1px 8px;border-radius:10px;font-size:.7rem;font-weight:700}
 .badge-ok{background:#D1FAE5;color:#065F46}.badge-ko{background:#FEE2E2;color:#991B1B}
-.metrics{margin-top:.4rem}
 .kv{display:flex;justify-content:space-between;padding:2px 0}
 .k{color:#64748B}.v{font-weight:600}
-.v.good{color:#10B981}.v.bad{color:#EF4444}
-.sep{height:1px;background:#E2E8F0;margin:5px 0}
-.cron-row{padding:6px 0;border-bottom:1px solid #F1F5F9}
+.v.good{color:var(--green)}.v.bad{color:var(--red)}
+.sep{height:1px;background:var(--border);margin:4px 0}
+.patri-section{font-weight:700;color:var(--cyan);font-size:.82rem;padding:3px 0;border-bottom:1px solid var(--border);margin-bottom:2px}
+.patri-total{font-weight:700;font-size:.9rem;color:var(--navy);margin-top:6px;padding:5px 6px;background:#F1F5F9;border-radius:5px;text-align:center}
+.alloc{margin-top:3px;padding:2px 6px;background:#F1F5F9;border-radius:4px;font-size:.72rem}
+.cron-row{padding:5px 0;border-bottom:1px solid #F1F5F9}
 .cron-top{display:flex;align-items:center;gap:.3rem}
-.cron-freq{margin-left:auto;color:#64748B;font-size:.72rem;white-space:nowrap}
-.cron-desc{color:#94A3B8;font-size:.72rem;padding-left:1.4rem;margin-top:1px}
-.cal-item{padding:3px 0;border-bottom:1px solid #F1F5F9}
-.pipe-stage{font-weight:700;color:var(--cyan);margin-top:.4rem;padding:2px 0;font-size:.78rem}
+.cron-freq{margin-left:auto;color:#64748B;font-size:.7rem;white-space:nowrap}
+.cron-desc{color:var(--muted);font-size:.7rem;padding-left:1.4rem;margin-top:1px}
+.pipe-stage{font-weight:700;color:var(--cyan);margin-top:.4rem;padding:2px 0;font-size:.76rem}
 .pipe-item{display:flex;justify-content:space-between;padding:2px 0;border-bottom:1px solid #F8FAFC}
 .pipe-val{font-weight:600}
-.pipe-total{display:flex;justify-content:space-between;font-weight:700;background:#F1F5F9;border-radius:4px;padding:3px 6px;margin:3px 0;font-size:.78rem}
-.pea-total{font-size:1rem;font-weight:700;color:var(--cyan);margin-bottom:.4rem}
-.patri-section{font-weight:700;color:var(--cyan);font-size:.85rem;padding:4px 0;border-bottom:1px solid #E2E8F0;margin-bottom:2px}
-.patri-total{font-weight:700;font-size:.95rem;color:var(--navy);margin-top:8px;padding:6px 8px;background:#F1F5F9;border-radius:6px;text-align:center}
-.alloc{margin-top:.4rem;padding:3px 6px;background:#F1F5F9;border-radius:5px;font-size:.75rem}
-.todo-item{padding:3px 0;border-bottom:1px solid #F1F5F9}
-.todo-done{padding:3px 0;border-bottom:1px solid #F1F5F9;color:#94A3B8;text-decoration:line-through}
+.pipe-total{display:flex;justify-content:space-between;font-weight:700;background:#F1F5F9;border-radius:4px;padding:3px 6px;margin:3px 0;font-size:.76rem}
+
+/* Todo */
+.todo-input{display:flex;gap:6px;margin-bottom:8px}
+.todo-input input{flex:1;padding:6px 10px;border:1.5px solid var(--border);border-radius:6px;font-size:.82rem}
+.todo-input input:focus{outline:none;border-color:var(--cyan)}
+.todo-input button{padding:6px 12px;background:var(--cyan);color:#fff;border:none;border-radius:6px;font-size:.78rem;font-weight:600;cursor:pointer;white-space:nowrap}
+.todo-item{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid #F1F5F9}
+.todo-item input[type=checkbox]{width:16px;height:16px;accent-color:var(--cyan);cursor:pointer}
+.todo-item .text{flex:1;font-size:.8rem}
+.todo-item .text.done{text-decoration:line-through;color:var(--muted)}
+.todo-item .del{background:none;border:none;color:var(--muted);cursor:pointer;font-size:.9rem;padding:2px 4px}
+.todo-item .del:hover{color:var(--red)}
+.todo-empty{color:var(--muted);font-style:italic;font-size:.8rem}
+.todo-saving{color:var(--cyan);font-size:.7rem;text-align:right}
+
+/* Settings Modal */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:100;align-items:center;justify-content:center}
+.modal-bg.show{display:flex}
+.modal{background:var(--card);border-radius:12px;padding:1.5rem;width:90%;max-width:380px;box-shadow:0 8px 32px rgba(0,0,0,.15)}
+.modal h3{margin-bottom:1rem;font-size:1rem}
+.modal input{width:100%;padding:8px 10px;border:1.5px solid var(--border);border-radius:6px;font-size:.85rem;margin-bottom:.8rem}
+.modal input:focus{outline:none;border-color:var(--cyan)}
+.modal .actions{display:flex;gap:8px;justify-content:flex-end}
+.modal .btn-sm{padding:6px 16px;font-size:.82rem;border-radius:6px;cursor:pointer;font-weight:600}
+.modal .btn-cancel{background:#F1F5F9;color:var(--navy);border:none}
+.modal .btn-save{background:var(--cyan);color:#fff;border:none}
+.status-msg{font-size:.72rem;margin-bottom:6px}
+.status-ok{color:var(--green)}.status-err{color:var(--red)}
+
+/* Loading */
+.loading{text-align:center;padding:1rem;color:var(--muted);font-size:.8rem}
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+.loading::after{content:" ⏳";animation:pulse 1.5s infinite}
+
 @media(max-width:500px){.grid{grid-template-columns:1fr}#dash{padding:.6rem}.header h1{font-size:1.1rem}}
 </style></head><body>
+
+<!-- Lock Screen -->
 <div id="lock"><div>
 <h2>🎛️ Mission Control</h2>
 <input type="password" id="pwd" placeholder="Mot de passe" autofocus>
-<button type="button" class="btn" id="btn">Entrer</button>
+<button type="button" class="btn" id="loginBtn" style="display:block;margin:1rem auto 0">Entrer</button>
 <div id="err">Mot de passe incorrect</div>
 </div></div>
+
+<!-- Dashboard -->
 <div id="dash">
-<div class="header"><h1>🎛️ Mission Control</h1><span class="ts">Mis à jour : 28/02/2026 01:01</span></div>
-<div class="grid"><div class="card">
-<details open>
-<summary class="card-header" style="border-left:4px solid #10B981">
-<span class="icon">🤖</span><span class="card-title">AEGIS Live</span>
-<span class="chevron">▾</span>
-</summary>
-<div class="card-body"><span class="badge badge-ok">Running</span> PID 104783 · 50 ordres
-<div class="metrics"><div class="kv"><span class="k">ETH</span><span class="v">$1,929.55 ↘️</span></div><div class="kv"><span class="k">SOL</span><span class="v">$81.84 ↘️</span></div><div class="kv"><span class="k">AVAX</span><span class="v">$8.95 ↘️</span></div><div class="kv"><span class="k">LINK</span><span class="v">$8.71 ↗️</span></div><div class="sep"></div>
-<div class="kv"><span class="k">P&L réalisé</span><span class="v good">+$14.91</span></div>
-<div class="kv"><span class="k">P&L non réalisé</span><span class="v bad">$-65.36</span></div>
-<div class="kv"><span class="k">P&L total</span><span class="v bad">$-50.45</span></div>
-<div class="sep"></div>
-<div class="kv"><span class="k">USDC libre</span><span class="v">$709.28</span></div>
-<div class="kv"><span class="k">Valeur totale</span><span class="v" style="font-weight:700">$1,790.67</span></div>
-</div></div>
-</details></div><div class="card">
-<details open>
-<summary class="card-header" style="border-left:4px solid #F59E0B">
-<span class="icon">📋</span><span class="card-title">To Do</span>
-<span class="chevron">▾</span>
-</summary>
-<div class="card-body"><i>Liste vide — dis-moi quoi ajouter</i></div>
-</details></div><div class="card">
-<details open>
-<summary class="card-header" style="border-left:4px solid #3B82F6">
-<span class="icon">📅</span><span class="card-title">Agenda</span>
-<span class="chevron">▾</span>
-</summary>
-<div class="card-body"><i>Pas de RDV à venir</i></div>
-</details></div><div class="card">
-<details open>
-<summary class="card-header" style="border-left:4px solid #8B5CF6">
-<span class="icon">⚙️</span><span class="card-title">Crons</span>
-<span class="chevron">▾</span>
-</summary>
-<div class="card-body"><div class="cron-row">
-<div class="cron-top">🟢 <b>Sauvegarde mémoire 30min</b><span class="cron-freq">Toutes les 30 min</span></div>
-<div class="cron-desc">Vérifie si quelque chose d'important s'est passé, met à jour le journal du jour</div></div><div class="cron-row">
-<div class="cron-top">🟢 <b>datagouv-mcp-check</b><span class="cron-freq">Toutes les 3h</span></div>
-<div class="cron-desc">Vérifie si le serveur MCP data.gouv.fr est de nouveau en ligne</div></div><div class="cron-row">
-<div class="cron-top">🟢 <b>Mission Control Dashboard</b><span class="cron-freq">Toutes les 30 min</span></div>
-<div class="cron-desc">Régénère ce dashboard et le pousse sur GitHub Pages</div></div><div class="cron-row">
-<div class="cron-top">🟢 <b>AEGIS Live Report AM</b><span class="cron-freq">Tous les jours 9h</span></div>
-<div class="cron-desc">Rapport matinal AEGIS : état du bot, P&amp;L, ordres, recos d'optimisation</div></div><div class="cron-row">
-<div class="cron-top">🟢 <b>AEGIS Live Report PM</b><span class="cron-freq">Tous les jours 20h</span></div>
-<div class="cron-desc">Rapport du soir AEGIS : bilan de la journée, performance, alertes</div></div><div class="cron-row">
-<div class="cron-top">🟢 <b>DCA PEA Mensuel</b><span class="cron-freq">1er du mois 9h</span></div>
-<div class="cron-desc">Rappel mensuel pour l'injection DCA sur le PEA Fortuneo</div></div><div class="cron-row">
-<div class="cron-top">🟢 <b>Rapport Finance Lundi</b><span class="cron-freq">Lundi 8h30</span></div>
-<div class="cron-desc">Brief marchés hebdo : indices, événements macro, avis personnalisé</div></div><div class="cron-row">
-<div class="cron-top">🟢 <b>Prospection Engine Python (--live)</b><span class="cron-freq">Lun→Ven 8h30</span></div>
-<div class="cron-desc">Scan des mails envoyés + mise à jour automatique de Copper CRM</div></div><div class="cron-row">
-<div class="cron-top">🟢 <b>Moteur Prospection Quotidien</b><span class="cron-freq">Lun→Ven 9h</span></div>
-<div class="cron-desc">Brief matin : agenda, relances du jour, brouillons, tâches en cours</div></div><div class="cron-row">
-<div class="cron-top">🟢 <b>Rapport Finance Jeudi</b><span class="cron-freq">Jeudi 8h30</span></div>
-<div class="cron-desc">Mise à jour mi-semaine : suivi marchés et positions</div></div><div class="cron-row">
-<div class="cron-top">🟢 <b>Relance France Travail - Simeoni (post go-live avril)</b><span class="cron-freq">Le 14/04/2026</span></div>
-<div class="cron-desc">Rappel one-shot : relancer Simeoni après le go-live CRM en avril</div></div></div>
-</details></div><div class="card">
-<details open>
-<summary class="card-header" style="border-left:4px solid #0EA5E9">
-<span class="icon">🎯</span><span class="card-title">Pipeline</span>
-<span class="chevron">▾</span>
-</summary>
-<div class="card-body"><div class="pipe-stage">Negotiation (proche closing)</div><div class="pipe-item"><span>AUDIKA</span><span class="pipe-val">12 000€</span></div><div class="pipe-item"><span>MIFF Assurance</span><span class="pipe-val">38 000€</span></div><div class="pipe-item"><span>GROUPE SCHMIDT</span><span class="pipe-val">35 000€</span></div><div class="pipe-total"><span>TOTAL Negotiation (proche closing)</span><span class="pipe-val">85 000€</span></div><div class="pipe-stage">Proposal (proposition envoyée)</div><div class="pipe-item"><span>FRANCE TRAVAIL</span><span class="pipe-val">102 000€</span></div><div class="pipe-item"><span>CAISSE D'EPARGNE</span><span class="pipe-val">21 000€</span></div><div class="pipe-item"><span>MOBILIZE</span><span class="pipe-val">22 000€</span></div><div class="pipe-item"><span>INDIGO</span><span class="pipe-val">20 000€</span></div><div class="pipe-item"><span>METLIFE</span><span class="pipe-val">18 000€</span></div><div class="pipe-item"><span>FDB</span><span class="pipe-val">17 500€</span></div><div class="pipe-item"><span>PAUL</span><span class="pipe-val">15 000€</span></div><div class="pipe-total"><span>TOTAL Proposal (proposition envoyée)</span><span class="pipe-val">215 500€</span></div><div class="pipe-stage">Presentation (RDV fait)</div><div class="pipe-item"><span>NATURE ET DÉCOUVERTES</span><span class="pipe-val">30 000€</span></div><div class="pipe-item"><span>BODEMER AUTO</span><span class="pipe-val">15 496€</span></div><div class="pipe-item"><span>COMPAGNIE DES ANIMAUX</span><span class="pipe-val">15 000€</span></div><div class="pipe-item"><span>LAZEO</span><span class="pipe-val">12 000€</span></div><div class="pipe-item"><span>AXA</span><span class="pipe-val">TBD</span></div><div class="pipe-item"><span>BYD</span><span class="pipe-val">TBD</span></div><div class="pipe-item"><span>Grain de Malice</span><span class="pipe-val">TBD</span></div><div class="pipe-item"><span>MAISON 123</span><span class="pipe-val">TBD</span></div><div class="pipe-item"><span>MR BRICOLAGE</span><span class="pipe-val">TBD</span></div><div class="pipe-item"><span>ORANGE BTOB</span><span class="pipe-val">TBD</span></div><div class="pipe-total"><span>TOTAL Presentation (RDV fait)</span><span class="pipe-val">72 500€</span></div></div>
-</details></div><div class="card">
-<details open>
-<summary class="card-header" style="border-left:4px solid #10B981">
-<span class="icon">💰</span><span class="card-title">Patrimoine</span>
-<span class="chevron">▾</span>
-</summary>
-<div class="card-body"><div class="patri-section">PEA Fortuneo — 28 086€</div>
-<div class="kv"><span class="k">PE500 (S&P 500)</span><span class="v">11 948€ (42,5%)</span></div>
-<div class="kv"><span class="k">PAEEM (MSCI Emerging)</span><span class="v">7 690€ (27,4%)</span></div>
-<div class="kv"><span class="k">PUST (Nasdaq-100)</span><span class="v">1 956€ (7,0%)</span></div>
-<div class="alloc">🇺🇸 49,5% · 🌏 27,4% · 🌍 23,1%</div>
-<div class="patri-section" style="margin-top:8px">PER Fortuneo — 29 051€</div>
-<div class="kv"><span class="k">MSCI World</span><span class="v">16 491€ (56,8%)</span></div>
-<div class="kv"><span class="k">Nasdaq-100 SWAP</span><span class="v">6 355€ (21,9%)</span></div>
-<div class="kv"><span class="k">MSCI Emerging</span><span class="v">6 205€ (21,4%)</span></div>
-<div class="alloc">🌍 56,8% · 💻 21,9% · 🌏 21,4%</div>
-<div class="patri-section" style="margin-top:8px">Assurances Vie</div>
-<div class="kv"><span class="k">Evoluvie IV (fonds euro)</span><span class="v">403,48 €</span></div>
-<div class="kv"><span class="k">Evoluvie IV (fonds actions)</span><span class="v">220,25 €</span></div>
-<div class="kv" style="color:#94A3B8;font-style:italic"><span class="k">Spirit 2 / Lucya / Essentiel</span><span class="v">À ouvrir</span></div>
-<div class="patri-total">Total patrimoine : 136 500€</div></div>
-</details></div></div>
+<div class="header">
+<h1>🎛️ Mission Control</h1>
+<span class="ts" id="ts">Chargement...</span>
+<button class="settings-btn" id="settingsBtn" title="Paramètres">⚙️</button>
 </div>
+<div class="grid" id="cards">
+<div class="loading">Chargement du dashboard</div>
+</div>
+</div>
+
+<!-- Settings Modal -->
+<div class="modal-bg" id="modalBg">
+<div class="modal">
+<h3>⚙️ Paramètres</h3>
+<div id="tokenStatus"></div>
+<label style="font-size:.8rem;color:#64748B">Token GitHub (pour éditer la To Do)</label>
+<input type="password" id="tokenInput" placeholder="ghp_...">
+<div class="actions">
+<button class="btn-sm btn-cancel" id="modalCancel">Annuler</button>
+<button class="btn-sm btn-save" id="modalSave">Sauvegarder</button>
+</div>
+</div>
+</div>
+
 <script>
-const H="7c984035a4d0997bababaf91df54c5f3c3655aa90e35ef7cd764a9a9e49e1936";
-async function sha(m){const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(m));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,"0")).join("")}
-function show(){document.getElementById("lock").style.display="none";document.getElementById("dash").style.display="block"}
-if(sessionStorage.getItem("mc")=="1")show();
-document.getElementById("btn").addEventListener("click",async function(){
-const p=document.getElementById("pwd").value;
-const h=await sha(p);
-if(h===H){sessionStorage.setItem("mc","1");show()}
-else{document.getElementById("err").style.display="block"}
+const REPO = "svagnier-ux/mission-control";
+const BRANCH = "master";
+const API = `https://api.github.com/repos/${REPO}/contents`;
+const RAW = `https://raw.githubusercontent.com/${REPO}/${BRANCH}`;
+const PASS_HASH_HEX = null; // computed at runtime
+
+// ── Utils ──
+async function sha256(msg){
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(msg));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("");
+}
+function getToken(){ return localStorage.getItem("mc_gh_token") || "" }
+function setToken(t){ localStorage.setItem("mc_gh_token", t) }
+
+// ── Auth ──
+let passHash = null;
+(async()=>{ passHash = await sha256("jim2026") })();
+
+function showDash(){
+  document.getElementById("lock").style.display="none";
+  document.getElementById("dash").style.display="block";
+  loadDashboard();
+}
+if(sessionStorage.getItem("mc")==="1") showDash();
+
+document.getElementById("loginBtn").addEventListener("click", async()=>{
+  const h = await sha256(document.getElementById("pwd").value);
+  if(h===passHash){ sessionStorage.setItem("mc","1"); showDash() }
+  else{ document.getElementById("err").style.display="block" }
 });
-document.getElementById("pwd").addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();document.getElementById("btn").click()}});
+document.getElementById("pwd").addEventListener("keydown", e=>{
+  if(e.key==="Enter"){e.preventDefault();document.getElementById("loginBtn").click()}
+});
+
+// ── Settings ──
+document.getElementById("settingsBtn").addEventListener("click",()=>{
+  const t = getToken();
+  document.getElementById("tokenInput").value = t;
+  const st = document.getElementById("tokenStatus");
+  st.innerHTML = t ? '<div class="status-msg status-ok">✅ Token configuré</div>' : '<div class="status-msg status-err">⚠️ Token requis pour éditer la To Do</div>';
+  document.getElementById("modalBg").classList.add("show");
+});
+document.getElementById("modalCancel").addEventListener("click",()=>{
+  document.getElementById("modalBg").classList.remove("show");
+});
+document.getElementById("modalSave").addEventListener("click",()=>{
+  const t = document.getElementById("tokenInput").value.trim();
+  if(t) setToken(t);
+  document.getElementById("modalBg").classList.remove("show");
+  loadTodo(); // reload with new token
+});
+document.getElementById("modalBg").addEventListener("click", e=>{
+  if(e.target===document.getElementById("modalBg")) document.getElementById("modalBg").classList.remove("show");
+});
+
+// ── Dashboard Loading ──
+async function loadDashboard(){
+  try{
+    // Load data.json (public, no token needed)
+    const r = await fetch(RAW+"/data.json?t="+Date.now());
+    if(!r.ok) throw new Error("data.json not found");
+    const data = await r.json();
+    renderCards(data);
+  }catch(e){
+    document.getElementById("cards").innerHTML = `<div class="loading" style="animation:none">❌ ${e.message}<br>Le dashboard n'a pas encore été généré.</div>`;
+  }
+}
+
+function renderCards(data){
+  document.getElementById("ts").textContent = "Mis à jour : " + data.updated;
+  const cards = data.cards;
+  const order = ["aegis","todo","agenda","crons","pipeline","patrimoine"];
+  const meta = {
+    aegis:{icon:"🤖",title:"AEGIS Live",color:"#10B981"},
+    todo:{icon:"📋",title:"To Do",color:"#F59E0B"},
+    agenda:{icon:"📅",title:"Agenda",color:"#3B82F6"},
+    crons:{icon:"⚙️",title:"Crons",color:"#8B5CF6"},
+    pipeline:{icon:"🎯",title:"Pipeline",color:"#0EA5E9"},
+    patrimoine:{icon:"💰",title:"Patrimoine",color:"#10B981"},
+  };
+  let html = "";
+  for(const key of order){
+    const m = meta[key];
+    if(key === "todo"){
+      html += `<div class="card"><details open>
+        <summary class="card-header" style="border-left:4px solid ${m.color}">
+        <span class="icon">${m.icon}</span><span class="card-title">${m.title}</span>
+        <span class="chev">▾</span></summary>
+        <div class="card-body" id="todoBody"><div class="loading">Chargement</div></div>
+        </details></div>`;
+    } else if(cards[key]){
+      html += `<div class="card"><details open>
+        <summary class="card-header" style="border-left:4px solid ${m.color}">
+        <span class="icon">${m.icon}</span><span class="card-title">${m.title}</span>
+        <span class="chev">▾</span></summary>
+        <div class="card-body">${cards[key]}</div>
+        </details></div>`;
+    }
+  }
+  document.getElementById("cards").innerHTML = html;
+  loadTodo();
+}
+
+// ── Todo CRUD ──
+let todoSha = null;
+let todoTasks = [];
+let saving = false;
+
+async function loadTodo(){
+  const body = document.getElementById("todoBody");
+  if(!body) return;
+  
+  const token = getToken();
+  try{
+    let tasks;
+    if(token){
+      // Use API to get sha (needed for writes)
+      const r = await fetch(`${API}/todo.json`,{headers:{"Authorization":`token ${token}`,"Accept":"application/vnd.github.v3+json"}});
+      if(r.ok){
+        const d = await r.json();
+        todoSha = d.sha;
+        tasks = JSON.parse(atob(d.content));
+      } else {
+        tasks = {tasks:[]};
+        todoSha = null;
+      }
+    } else {
+      // No token, try raw (read-only)
+      const r = await fetch(RAW+"/todo.json?t="+Date.now());
+      if(r.ok) tasks = await r.json();
+      else tasks = {tasks:[]};
+    }
+    todoTasks = tasks.tasks || [];
+    renderTodo();
+  }catch(e){
+    body.innerHTML = `<div class="todo-empty">Erreur: ${e.message}</div>`;
+  }
+}
+
+function renderTodo(){
+  const body = document.getElementById("todoBody");
+  const token = getToken();
+  let html = "";
+  
+  if(token){
+    html += `<div class="todo-input">
+      <input type="text" id="todoNew" placeholder="Nouvelle tâche..." maxlength="200">
+      <button type="button" onclick="addTodo()">Ajouter</button>
+    </div>`;
+  }
+  
+  html += '<div id="todoSaveStatus"></div>';
+  
+  if(todoTasks.length === 0){
+    html += '<div class="todo-empty">Liste vide</div>';
+  } else {
+    // Active first, done last
+    const active = todoTasks.filter(t=>!t.done);
+    const done = todoTasks.filter(t=>t.done);
+    for(const t of [...active,...done]){
+      const checked = t.done ? "checked" : "";
+      const cls = t.done ? "text done" : "text";
+      html += `<div class="todo-item">
+        <input type="checkbox" ${checked} onchange="toggleTodo('${t.id}')" ${!token?"disabled":""}>
+        <span class="${cls}">${esc(t.text)}</span>
+        ${token ? `<button class="del" onclick="deleteTodo('${t.id}')" title="Supprimer">✕</button>` : ""}
+      </div>`;
+    }
+  }
+  
+  if(!token){
+    html += '<div style="margin-top:8px;font-size:.72rem;color:#94A3B8">⚙️ Configure ton token GitHub pour éditer</div>';
+  }
+  
+  body.innerHTML = html;
+  
+  // Enter key on input
+  const inp = document.getElementById("todoNew");
+  if(inp) inp.addEventListener("keydown", e=>{ if(e.key==="Enter") addTodo() });
+}
+
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+
+async function addTodo(){
+  const inp = document.getElementById("todoNew");
+  const text = inp.value.trim();
+  if(!text) return;
+  inp.value = "";
+  todoTasks.push({id:crypto.randomUUID(),text,done:false,created:new Date().toISOString()});
+  renderTodo();
+  await saveTodo();
+}
+
+async function toggleTodo(id){
+  const t = todoTasks.find(x=>x.id===id);
+  if(t) t.done = !t.done;
+  renderTodo();
+  await saveTodo();
+}
+
+async function deleteTodo(id){
+  todoTasks = todoTasks.filter(x=>x.id!==id);
+  renderTodo();
+  await saveTodo();
+}
+
+async function saveTodo(){
+  const token = getToken();
+  if(!token) return;
+  const st = document.getElementById("todoSaveStatus");
+  if(st) st.innerHTML = '<div class="todo-saving">Sauvegarde...</div>';
+  
+  try{
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify({tasks:todoTasks},null,2))));
+    const body = {message:"Update todo",content,branch:BRANCH};
+    if(todoSha) body.sha = todoSha;
+    
+    const r = await fetch(`${API}/todo.json`,{
+      method:"PUT",
+      headers:{"Authorization":`token ${token}`,"Accept":"application/vnd.github.v3+json","Content-Type":"application/json"},
+      body:JSON.stringify(body)
+    });
+    
+    if(r.ok){
+      const d = await r.json();
+      todoSha = d.content.sha;
+      if(st) st.innerHTML = '<div class="todo-saving" style="color:#10B981">✅ Sauvé</div>';
+      setTimeout(()=>{ if(st) st.innerHTML="" }, 1500);
+    } else {
+      const err = await r.json();
+      throw new Error(err.message || r.status);
+    }
+  }catch(e){
+    if(st) st.innerHTML = `<div class="todo-saving" style="color:#EF4444">❌ ${e.message}</div>`;
+  }
+}
 </script></body></html>
